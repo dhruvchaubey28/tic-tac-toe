@@ -2,7 +2,7 @@
 from tkinter import * 
 from tkinter import messagebox
  
-Player1 = 'X'
+Player1 = 'O'
 stop_game = False
  
 def clicked(r,c):
