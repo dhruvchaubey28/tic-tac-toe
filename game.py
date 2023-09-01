@@ -1,90 +1,86 @@
-import os    
-import time    
-    
-board = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']    
-player = 1    
-   
-    
-Win = 1    
-Draw = -1    
-Running = 0    
-Stop = 1    
-    
-Game = Running    
-Mark = 'X'    
-   
-    
-def DrawBoard():    
-    print(" %c | %c | %c " % (board[1],board[2],board[3]))    
-    print("_|_|_")    
-    print(" %c | %c | %c " % (board[4],board[5],board[6]))    
-    print("_|_|_")    
-    print(" %c | %c | %c " % (board[7],board[8],board[9]))    
-    print("   |   |   ")
+from tkinter import *
+from tkinter import messagebox
 
-    
-def CheckPosition(x):    
-    if(board[x] == ' '):    
-        return True    
-    else:    
-        return False    
-   
-    
-def CheckWin():    
-    global Game
-    
-    if(board[1] == board[2] and board[2] == board[3] and board[1] != ' '):    
-        Game = Win    
-    elif(board[4] == board[5] and board[5] == board[6] and board[4] != ' '):    
-        Game = Win    
-    elif(board[7] == board[8] and board[8] == board[9] and board[7] != ' '):    
-        Game = Win    
-        
-    elif(board[1] == board[4] and board[4] == board[7] and board[1] != ' '):    
-        Game = Win    
-    elif(board[2] == board[5] and board[5] == board[8] and board[2] != ' '):    
-        Game = Win    
-    elif(board[3] == board[6] and board[6] == board[9] and board[3] != ' '):    
-        Game=Win    
-       
-    elif(board[1] == board[5] and board[5] == board[9] and board[5] != ' '):    
-        Game = Win    
-    elif(board[3] == board[5] and board[5] == board[7] and board[5] != ' '):    
-        Game=Win    
-    
-elif(board[1]!=' ' and board[2]!=' ' and board[3]!=' ' and board[4]!=' ' and board[5]!=' ' and board[6]!=' ' and board[7]!=' ' and board[8]!=' ' and board[9]!=' '):    
-        Game=Draw    
-    else:            
-        Game=Running    
-    
-print("Tic-Tac-Toe Game Designed By Sourabh Somani")    
-print("Player 1 [X] --- Player 2 [O]\n")    
-print()    
-print()    
-print("Please Wait...")    
-time.sleep(3)    
-while(Game == Running):    
-    os.system('cls')    
-    DrawBoard()    
-    if(player % 2 != 0):    
-        print("Player 1's chance")    
-        Mark = 'X'    
-    else:    
-        print("Player 2's chance")    
-        Mark = 'O'    
-    choice = int(input("Enter the position between [1-9] where you want to mark : "))    
-    if(CheckPosition(choice)):    
-        board[choice] = Mark    
-        player+=1    
-        CheckWin()    
-    
-os.system('cls')    
-DrawBoard()    
-if(Game==Draw):    
-    print("Game Draw")    
-elif(Game==Win):    
-    player-=1    
-    if(player%2!=0):    
-        print("Player 1 Won")    
-    else:    
-        print("Player 2 Won")
+Player1 = 'X'
+stop_game = False
+
+def clicked(r,c):
+	
+	global Player1
+
+	if Player1 == "X" and states[r] == 0 and stop_game == False:
+		b[r].configure(text = "X")
+		states[r] = 'X'
+		Player1='O'
+
+	
+	if Player1 == 'O' and states[r] == 0 and stop_game == False:
+		b[r].configure(text = 'O')
+		states[r] = "O"
+		Player1 = "X"
+
+	check_if_win()
+
+def check_if_win():
+	global stop_game
+
+
+	for i in range(3):
+		if states[i][0] == states[i][1] == states[i][2] !=0:
+			stop_game = True
+
+			winner = messagebox.showinfo("Winner", states[i][0] + " Won")
+
+			break
+
+
+		elif states [0][i] == states[1][i] == states[2][i] != 0:
+			stop_game = True
+
+			winner = messagebox.showinfo("Winner", states[0][i]+ " Won!")
+			break
+
+		elif states[0][0] == states[1][1] == states[2][2] !=0:
+			stop_game = True
+
+			winner = messagebox.showinfo("Winner", states[0][0]+ " Won!")
+			break
+
+		elif states[0][2] == states[1][1] == states[2][0] !=0:
+			stop_game = True
+
+			winner = messagebox.showinfo("Winner" , states[0][2]+ " Won!")
+			break
+
+		elif states[0][0] and states[0][1] and states[0][2] and states[1][0] and states[1][1] and states[1][2] and states[2][0] and states[2][1] and states[2][2] != 0:
+			stop_game = True
+
+			winner = messagebox.showinfo("tie", "Tie")
+
+root = Tk()
+			
+root.title("DevOPs project-:Tic Tac Toe")
+root.resizable(0,0)
+
+
+b = [
+	[0,0,0],
+	[0,0,0],
+	[0,0,0]]
+
+states = [
+	[0,0,0],
+	[0,0,0],
+	[0,0,0]]
+
+for i in range(3):
+	for j in range(3):
+										
+		b[i][j] = Button(
+						height = 4, width = 8,
+						font = ("Helvetica","20"),
+						command = lambda r = i, c = j : clicked(r,c))
+		b[i][j].grid(row = i, column = j)
+
+
+mainloop()		
