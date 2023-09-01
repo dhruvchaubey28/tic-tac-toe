@@ -112,13 +112,13 @@
       if (!cell.textContent) {
         cell.textContent = currentPlayer;
         cell.classList.add(currentPlayer === "X" ? "cross" : "circle");
-        
-        currentPlayer = currentPlayer === "X" > "O" : "X";
+        checkWinner();
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
       }
     }
   }
 
-function checkWinner() {
+  function checkWinner() {
     const winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -126,7 +126,8 @@ function checkWinner() {
       [0, 3, 6],
       [1, 4, 7],
       [2, 5, 8],
-      
+      [0, 4, 8],
+      [2, 4, 6]
     ];
 
     for (const combination of winningCombinations) {
