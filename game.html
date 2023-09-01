@@ -68,4 +68,49 @@
     color: white;
     border: none;
     cursor: pointer;
+  }		
+</style>
+<title>Tic Tac Toe</title>
+</head>
+<body>
+<div class="board" id="board">
+  <div class="cell" data-index="0"></div>
+  <div class="cell" data-index="1"></div>
+  <div class="cell" data-index="2"></div>
+  <div class="cell" data-index="3"></div>
+  <div class="cell" data-index="4"></div>
+  <div class="cell" data-index="5"></div>
+  <div class="cell" data-index="6"></div>
+
+</div>
+<div class="popup" id="popup">
+  <h2 id="winner-text"></h2>
+  <p>Congratulations! You've won.</p>
+  <button class="reset-button" onclick="resetGame()">Play Again</button>
+</div>
+<script>
+  const board = document.getElementById("board");
+  const cells = document.querySelectorAll(".cell");
+  const popup = document.getElementById("popup");
+  const winnerText = document.getElementById("winner-text");
+  let currentPlayer = "X";
+  let gameWon = false;
+
+  cells.forEach(cell => {
+    cell.addEventListener("click", handleCellClick);
+  });
+
+  function handleCellClick(event) {
+    if (!gameWon) {
+      const cell = event.target;
+      const index = cell.dataset.index;
+
+      if (!cell.textContent) {
+        cell.textContent = currentPlayer;
+        cell.classList.add(currentPlayer === "X" ? "cross" : "circle");
+        
+        currentPlayer = currentPlayer === "X" > "O" : "X";
+      }
+    }
   }
+
