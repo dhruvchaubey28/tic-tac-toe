@@ -1,10 +1,18 @@
+om turtle import *
+import turtle as tur
 
-from tkinter import * 
-from tkinter import messagebox
+wd=tur.Screen()
  
-Player1 = 'O'
-stop_game = False
+turt=tur.Turtle()
+tur.title("Pythontpoint") 
+turt.color("blue")
+turt.width("4")
  
+turt.speed(2)
+ 
+for i in range(4):
+    turt.forward(300)
+    turt.left(90)
 def clicked(r,c):
      
     #player
