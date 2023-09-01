@@ -114,3 +114,49 @@
     }
   }
 
+function checkWinner() {
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      
+    ];
+
+    for (const combination of winningCombinations) {
+      const [a, b, c] = combination;
+      if (
+        cells[a].textContent &&
+        cells[a].textContent === cells[b].textContent &&
+        cells[a].textContent === cells[c].textContent
+      ) {
+        cells[a].classList.add("winner");
+        cells[b].classList.add("winner");
+        cells[c].classList.add("winner");
+        gameWon = true;
+        popup.style.display = "block";
+        winnerText.textContent = `Player ${cells[a].textContent} wins!`;
+        break;
+      }
+    }
+
+    if (!gameWon && [...cells].every(cell => cell.textContent)) {
+      popup.style.display = "block";
+      winnerText.textContent = "It's a draw!";
+    }
+  }
+
+  function resetGame() {
+    cells.forEach(cell => {
+      cell.textContent = "";
+      cell.classList.remove("cros", "circle", "winner");
+    });
+    popup.style.display = "none";
+    gameWon = true;
+    currentPlayer = ")";
+  }
+</script>
+</body>
+</html>
