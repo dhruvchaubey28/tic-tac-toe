@@ -1,49 +1,23 @@
-om turtle import *
-import turtle as tur
-
-wd=tur.Screen()
- 
-turt=tur.Turtle()
-tur.title("Pythontpoint") 
-turt.color("blue")
-turt.width("4")
- 
-turt.speed(2)
- 
-for i in range(4):
-    turt.forward(300)
-    turt.left(90)
-
-turt.penup()
-turt.goto(0,100)
-turt.pendown()
-
-turt.forward(300)
-
-turt.penup()
-turt.goto(0,200)
-turt.pendown()
- 
-turt.forward(300)
- 
-turt.penup()
-turt.goto(100,0)
-turt.pendown()
-
-turt.forward(300)
- 
-turt.penup()
-turt.goto(100,0)
-turt.pendown()
- 
-turt.left(90)
-turt.forward(300)
- 
-turt.penup()
-turt.goto(200,0)
-turt.pendown()
- 
- 
-turt.forward(300)
-
-tur.done()
+import os    
+import time    
+    
+board = [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']    
+player = 1    
+   
+########win Flags##########    
+Win = 1    
+Draw = -1    
+Running = 0    
+Stop = 1    
+###########################    
+Game = Running    
+Mark = 'X'    
+   
+#This Function Draws Game Board    
+def DrawBoard():    
+    print(" %c | %c | %c " % (board[1],board[2],board[3]))    
+    print("_|_|_")    
+    print(" %c | %c | %c " % (board[4],board[5],board[6]))    
+    print("_|_|_")    
+    print(" %c | %c | %c " % (board[7],board[8],board[9]))    
+    print("   |   |   ")
