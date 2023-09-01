@@ -1,5 +1,4 @@
-# python game code
-#importing Packages from tkinter
+
 from tkinter import * 
 from tkinter import messagebox
  
