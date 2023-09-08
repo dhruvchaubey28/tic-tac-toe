@@ -73,98 +73,178 @@
         border: none;
         cursor: pointer;
       }
-</style>
-<title>Tic Tac Toe</title>
-</head>
-<body>
-<div class="board" id="board">
-<div class="cell" data-index="0"></div>
-  <div class="cell" data-index="1"></div>
-  <div class="cell" data-index="2"></div>
-  <div class="cell" data-index="3"></div>
-  <div class="cell" data-index="4"></div>
-  <div class="cell" data-index="5"></div>
-  <div class="cell" data-index="6"></div>
-  <div class="cell" data-index="7"></div>
-  <div class="cell" data-index="8"></div>
-</div>
-<div class="popup" id="popup">
-  <h2 id="winner-text"></h2>
-  <p>Game ended!</p>
-  <button class="reset-button" onclick="resetGame()">Play Again</button>
-</div>
-<script>
-  const board = document.getElementById("board");
-  const cells = document.querySelectorAll(".cell");
-  const popup = document.getElementById("popup");
-  const winnerText = document.getElementById("winner-text");
-  let currentPlayer = "X";
-  let gameWon = false;
-
-  cells.forEach(cell => {
-    cell.addEventListener("click", handleCellClick);
-  });
-
-  function handleCellClick(event) {
-    if (!gameWon) {
-      const cell = event.target;
-      const index = cell.dataset.index;
-
-      if (!cell.textContent) {
-        cell.textContent = currentPlayer;
-        cell.classList.add(currentPlayer === "X" ? "cross" : "circle");
-        checkWinner();
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      .info {
+        color: white;
+        margin-bottom: 48px;
       }
-    }
-  }
 
-  function checkWinner() {
-    const winningCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ];
-
-    for (const combination of winningCombinations) {
-      const [a, b, c] = combination;
-      if (
-        cells[a].textContent &&
-        cells[a].textContent === cells[b].textContent &&
-        cells[a].textContent === cells[c].textContent
-      ) {
-        cells[a].classList.add("winner");
-        cells[b].classList.add("winner");
-        cells[c].classList.add("winner");
-        gameWon = true;
-        popup.style.display = "block";
-        winnerText.textContent = `Player ${cells[a].textContent} wins!`;
-        break;
+      .scoreboard {
+        display: flex;
+        gap: 20px;
       }
-    }
-    
-    if (!gameWon && [...cells].every(cell => cell.textContent)) {
-      popup.style.display = "block";
-      winnerText.textContent = "It's a draw!";
-    }
-  }
 
-  function resetGame() {
-    cells.forEach(cell => {
-      cell.textContent = "";
-      cell.classList.remove("cross", "circle", "winner");
-    });
-    popup.style.display = "none";
-    gameWon = false;
-    currentPlayer = "X";
-  }
-</script>
-</body>
+      .circle-wins,
+      .cross-wins {
+        width: 100px;
+        height: 50px;
+        padding: 14px 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+      }
+
+      .circle-wins {
+        background-color: #efb234;
+      }
+
+      .cross-wins {
+        background-color: #31c4be;
+      }
+
+      .circle-wins>h2,
+      .cross-wins>h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #16383e;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .circle-wins>h2>span,
+      .cross-wins>h2>span {
+        font-size: 32px;
+        font-weight: bold;
+      }
+    </style>
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <div class="info">
+      <h1>Scoreboard</h1>
+      <div class="scoreboard">
+        <div class="cross-wins">
+          <h2>(X) Wins <span>0</span></h2>
+        </div>
+        <div class="circle-wins">
+          <h2>(0) Wins<span>0</span></h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="board" id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    <div class="popup" id="popup">
+      <h2 id="winner-text"></h2>
+      <p>Congratulations! You've won.</p>
+      <button class="reset-button" onclick="resetGame()">Play Again</button>
+    </div>
+    <script>
+      const board = document.getElementById("board");
+      const cells = document.querySelectorAll(".cell");
+      const popup = document.getElementById("popup");
+      const winnerText = document.getElementById("winner-text");
+      let crossWins = document.querySelector('.cross-wins span');
+      let circleWins = document.querySelector('.circle-wins span');
+      let currentPlayer = "X";
+      let gameWon = false;
+
+      cells.forEach(cell => {
+        cell.addEventListener("click", handleCellClick);
+      });
+
+      function handleCellClick(event) {
+        if (!gameWon) {
+          const cell = event.target;
+          const index = cell.dataset.index;
+
+          if (!cell.textContent) {
+            cell.textContent = currentPlayer;
+            cell.classList.add(currentPlayer === "X" ? "cross" : "circle");
+            checkWinner();
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+          }
+        }
+      }
+
+      function checkWinner() {
+        const winningCombinations = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        ];
+
+        // for (const combination of winningCombinations) {
+        //   const [a, b, c] = combination;
+        //   if (
+        //     cells[a].textContent &&
+        //     cells[a].textContent === cells[b].textContent &&
+        //     cells[a].textContent === cells[c].textContent
+        //   ) {
+        //     cells[a].classList.add("winner");
+        //     cells[b].classList.add("winner");
+        //     cells[c].classList.add("winner");
+        //     gameWon = true;
+        //     popup.style.display = "block";
+        //     winnerText.textContent = `Player ${cells[a].textContent} wins!`;
+        //     break;
+        //   }
+        // }
+
+        // console.log(cells[4]);
+
+        winningCombinations.forEach(array => {
+          const isCrossWin = array.every(cell => cells[cell].classList.contains('cross'));
+          const isCircleWin = array.every(cell => cells[cell].classList.contains('circle'));
+
+          if (isCrossWin) {
+            gameWon = true;
+            popup.style.display = "block";
+            winnerText.textContent = `Player Cross wins!`;
+            crossWins.textContent = +crossWins.textContent + 1;
+            return;
+          } else if (isCircleWin) {
+            gameWon = true;
+            popup.style.display = "block";
+            winnerText.textContent = `Player Cricle wins!`;
+            circleWins.textContent = +circleWins.textContent + 1;
+            return;
+          }
+        })
+
+        if (!gameWon && [...cells].every(cell => cell.textContent)) {
+          popup.style.display = "block";
+          winnerText.textContent = "It's a draw!";
+        }
+      }
+
+      function resetGame() {
+        cells.forEach(cell => {
+          cell.textContent = "";
+          cell.classList.remove("cross", "circle", "winner");
+        });
+        popup.style.display = "none";
+        gameWon = false;
+        currentPlayer = "X";
+      }
+    </script>
+  </body>
 </html>
 
 
