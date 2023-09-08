@@ -190,25 +190,6 @@
           [2, 4, 6]
         ];
 
-        // for (const combination of winningCombinations) {
-        //   const [a, b, c] = combination;
-        //   if (
-        //     cells[a].textContent &&
-        //     cells[a].textContent === cells[b].textContent &&
-        //     cells[a].textContent === cells[c].textContent
-        //   ) {
-        //     cells[a].classList.add("winner");
-        //     cells[b].classList.add("winner");
-        //     cells[c].classList.add("winner");
-        //     gameWon = true;
-        //     popup.style.display = "block";
-        //     winnerText.textContent = `Player ${cells[a].textContent} wins!`;
-        //     break;
-        //   }
-        // }
-
-        // console.log(cells[4]);
-
         winningCombinations.forEach(array => {
           const isCrossWin = array.every(cell => cells[cell].classList.contains('cross'));
           const isCircleWin = array.every(cell => cells[cell].classList.contains('circle'));
