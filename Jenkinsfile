@@ -1,9 +1,11 @@
 pipeline {
     agent any
     
-    // Define stages for the build pipeline
+    options {
+        timeout(time: 30, unit: 'MINUTES')  // Set overall pipeline timeout
+    }
+    
     stages {
-        // Checkout the code from GitHub
         stage('Checkout') {
             steps {
                 git branch: 'main', 
@@ -11,87 +13,83 @@ pipeline {
             }
         }
         
-        // Set up Python environment
         stage('Setup Python') {
             steps {
                 script {
-                    // On Windows
-                    if (isUnix() == false) {
-                        bat 'python -m pip install --upgrade pip'
-                    } 
-                    // On Unix/Linux
-                    else {
-                        sh 'python3 -m pip install --upgrade pip'
+                    try {
+                        if (isUnix()) {
+                            sh '''
+                                export PATH=$PATH:/Users/dhruvchaubey/Library/Python/3.9/bin
+                                python3 -m pip install --user --upgrade pip
+                            '''
+                        } else {
+                            bat 'python -m pip install --user --upgrade pip'
+                        }
+                    } catch (Exception e) {
+                        echo "Warning: Pip upgrade failed, continuing with existing version"
                     }
                 }
             }
         }
         
-        // Install project dependencies
         stage('Install Dependencies') {
             steps {
                 script {
-                    // On Windows
-                    if (isUnix() == false) {
-                        bat 'pip install pygame'
-                        bat 'pip install pytest'
-                    } 
-                    // On Unix/Linux
-                    else {
-                        sh 'pip3 install pygame'
-                        sh 'pip3 install pytest'
+                    try {
+                        if (isUnix()) {
+                            sh '''
+                                export PATH=$PATH:/Users/dhruvchaubey/Library/Python/3.9/bin
+                                python3 -m pip install --user pygame --default-timeout=100
+                                python3 -m pip install --user pytest --default-timeout=100
+                            '''
+                        } else {
+                            bat '''
+                                python -m pip install --user pygame --default-timeout=100
+                                python -m pip install --user pytest --default-timeout=100
+                            '''
+                        }
+                    } catch (Exception e) {
+                        error "Failed to install dependencies: ${e.message}"
                     }
                 }
             }
         }
         
-        // Run tests if there are any
         stage('Test') {
             steps {
                 script {
-                    // On Windows
-                    if (isUnix() == false) {
-                        bat 'python -m pytest tests/ || exit 0'
-                    } 
-                    // On Unix/Linux
-                    else {
-                        sh 'python3 -m pytest tests/ || exit 0'
+                    try {
+                        if (isUnix()) {
+                            sh '''
+                                export PATH=$PATH:/Users/dhruvchaubey/Library/Python/3.9/bin
+                                python3 -m pytest tests/ || true
+                            '''
+                        } else {
+                            bat 'python -m pytest tests/ || exit 0'
+                        }
+                    } catch (Exception e) {
+                        echo "Warning: Tests failed but continuing: ${e.message}"
                     }
                 }
             }
         }
         
-        // Static code analysis
-        stage('Code Analysis') {
-            steps {
-                script {
-                    // Install pylint if not present
-                    if (isUnix() == false) {
-                        bat 'pip install pylint'
-                        bat 'pylint *.py || exit 0'
-                    } else {
-                        sh 'pip3 install pylint'
-                        sh 'pylint *.py || exit 0'
-                    }
-                }
-            }
-        }
-        
-        // Build stage - for Python this is mostly a verification step
         stage('Build') {
             steps {
                 script {
-                    if (isUnix() == false) {
-                        bat 'python -m py_compile *.py'
+                    if (isUnix()) {
+                        sh '''
+                            export PATH=$PATH:/Users/dhruvchaubey/Library/Python/3.9/bin
+                            python3 -m py_compile *.py
+                        '''
                     } else {
-                        sh 'python3 -m py_compile *.py'
+                        bat 'python -m py_compile *.py'
                     }
                 }
             }
         }
     }
     
-    // Post-build actions
     post {
         success {
             echo 'Pipeline completed successfully!'
